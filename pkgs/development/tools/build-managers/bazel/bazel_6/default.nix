@@ -545,6 +545,10 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
+    # statically link libstdc++.so and libgcc_s.so
+    export BAZEL_LINKLIBS=''${BAZEL_LINKLIBS:-$BAZEL_LINKLIBS:}-l%:libstdc++.a:-lm
+    export BAZEL_LINKOPTS=''${BAZEL_LINKOPTS:-$BAZEL_LINKOPTS:}-static-libstdc++:-static-libgcc
+
     # Increasing memory during compilation might be necessary.
     # export BAZEL_JAVAC_OPTS="-J-Xmx2g -J-Xms200m"
 
