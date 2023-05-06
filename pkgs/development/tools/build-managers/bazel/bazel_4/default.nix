@@ -1,8 +1,8 @@
-{ stdenv, callPackage, lib, fetchurl, fetchpatch, fetchFromGitHub, installShellFiles
+{ stdenv, callPackage, lib, fetchurl, fetchFromGitHub, installShellFiles
 , runCommand, runCommandCC, makeWrapper, recurseIntoAttrs
 # this package (through the fixpoint glass)
 , bazel_self
-, lr, xe, zip, unzip, bash, writeCBin, coreutils
+, lr, xe, zip, unzip, bash, coreutils
 , which, gawk, gnused, gnutar, gnugrep, gzip, findutils
 # updater
 , python3, writeScript
@@ -22,6 +22,7 @@
 , file
 , substituteAll
 , writeTextFile
+, additionalDefaultShellUtils ? [ ]
 }:
 
 let
@@ -114,7 +115,7 @@ let
       unzip
       which
       zip
-    ];
+    ] ++ additionalDefaultShellUtils;
 
   defaultShellPath = lib.makeBinPath defaultShellUtils;
 

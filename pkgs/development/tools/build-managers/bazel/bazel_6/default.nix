@@ -1,8 +1,8 @@
-{ stdenv, callPackage, lib, fetchurl, fetchpatch, fetchFromGitHub, installShellFiles
+{ stdenv, callPackage, lib, fetchurl, fetchFromGitHub, installShellFiles
 , runCommand, runCommandCC, makeWrapper, recurseIntoAttrs
 # this package (through the fixpoint glass)
 , bazel_self
-, lr, xe, zip, unzip, bash, writeCBin, coreutils
+, lr, xe, zip, unzip, bash, coreutils
 , which, gawk, gnused, gnutar, gnugrep, gzip, findutils
 # updater
 , python3, writeScript
@@ -16,11 +16,10 @@
 # Always assume all markers valid (this is needed because we remove markers; they are non-deterministic).
 # Also, don't clean up environment variables (so that NIX_ environment variables are passed to compilers).
 , enableNixHacks ? false
-, gcc-unwrapped
-, autoPatchelfHook
 , file
 , substituteAll
 , writeTextFile
+, additionalDefaultShellUtils ? [ ]
 }:
 
 let
@@ -121,7 +120,7 @@ let
       unzip
       which
       zip
-    ];
+    ] ++ additionalDefaultShellUtils;
 
   defaultShellPath = lib.makeBinPath defaultShellUtils;
 
